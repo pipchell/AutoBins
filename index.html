@@ -1,259 +1,108 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bin Schedule</title>
-  <style>
-    :root{
-      --bg:#000;
-      --panel:#04130a;
-      --accent:#17D860; /* bright green */
-      --muted:#4bff8a33;
-      --text:#dfffe5;
-      font-size:16px;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+<meta charset="UTF-8">
+<title>Bin Collections - Royston</title>
+<style>
+    body {
+        background: #000;
+        color: white;
+        font-family: Arial, sans-serif;
+        padding: 20px;
     }
-    html,body{height:100%;}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,var(--bg),#03120a);
-      color:var(--text);
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding:36px;
-      box-sizing:border-box;
+    h1 { text-align: center; margin-bottom: 30px; }
+    .bin {
+        background: #111;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #333;
     }
-    .wrap{
-      width:100%;
-      max-width:1100px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(23,216,96,0.12);
-      border-radius:12px;
-      padding:18px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.6);
-    }
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    h1{font-size:20px;margin:0;color:var(--accent)}
-    .next-list{font-size:14px;color:var(--text);opacity:0.95}
-    .next-list span{display:inline-block;margin-right:12px}
-    .controls{display:flex;gap:8px;align-items:center}
-    button{background:transparent;border:1px solid rgba(23,216,96,0.12);color:var(--accent);padding:6px 10px;border-radius:8px;cursor:pointer}
-
-    /* timetable */
-    .table-wrap{overflow:auto;border-radius:8px;background:linear-gradient(180deg, rgba(23,216,96,0.02), rgba(23,216,96,0.01));padding:12px}
-    table{width:100%;border-collapse:collapse;min-width:720px}
-    thead th{position:sticky;top:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);color:var(--accent);padding:8px 10px;text-align:center;border-bottom:1px solid rgba(23,216,96,0.08)}
-    tbody td{padding:10px;text-align:center;border-bottom:1px dashed rgba(23,216,96,0.03);font-size:15px}
-
-    .bin-name{background:linear-gradient(90deg, rgba(23,216,96,0.03), transparent);text-align:left;padding-left:14px;color:var(--accent);font-weight:600}
-    .cell-on{background:linear-gradient(90deg, rgba(23,216,96,0.12), rgba(23,216,96,0.04));color:#001b08;border-radius:6px;padding:6px 8px;display:inline-block;min-width:110px}
-    .cell-off{color:#8fbfa4;opacity:0.9}
-    .today{outline:2px solid rgba(23,216,96,0.12);border-radius:6px}
-
-    /* legend */
-    .legend{margin-top:12px;display:flex;gap:16px;flex-wrap:wrap}
-    .legend .item{display:flex;gap:8px;align-items:center;font-size:13px}
-    .swatch{width:14px;height:14px;border-radius:4px;display:inline-block}
-    .sw-non{background:#2dff9a}
-    .sw-food{background:#b9ffbd}
-    .sw-mixed{background:#17d860}
-    .sw-garden{background:#66ff9a}
-    .sw-card{background:#baf7d0}
-
-    footer{margin-top:16px;color:#9fdcba;font-size:13px;text-align:right}
-
-    @media (max-width:720px){
-      thead th, tbody td{font-size:13px;padding:8px}
-    }
-  </style>
+    .today { color: #17d860; font-weight: bold; }
+    .tomorrow { color: #4db6ff; font-weight: bold; }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Bins coming up next</h1>
-        <div class="next-list" id="upcomingText">Loading upcoming pickups...</div>
-      </div>
-      <div class="controls">
-        <button id="refreshBtn">Refresh</button>
-        <button id="toggleFuture">Show 8 Mondays</button>
-      </div>
-    </header>
 
-    <div class="table-wrap">
-      <table id="scheduleTable" aria-describedby="upcomingText">
-        <thead id="thead"></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="legend">
-      <div class="item"><span class="swatch sw-non"></span>Non-Recyclable</div>
-      <div class="item"><span class="swatch sw-food"></span>Food Waste</div>
-      <div class="item"><span class="swatch sw-mixed"></span>Mixed Recycling</div>
-      <div class="item"><span class="swatch sw-garden"></span>Garden Waste</div>
-      <div class="item"><span class="swatch sw-card"></span>Cardboard & Paper</div>
-    </div>
-
-    <footer id="footer">Schedule calculated from given start dates.</footer>
-  </div>
+<h1>Bin Collections - Royston</h1>
+<div id="output"></div>
 
 <script>
-// --- configuration for each bin type ---
-const MS_DAY = 24*60*60*1000;
-function toUTCDate(y,m,d){ // m 1-12
-  return new Date(Date.UTC(y,m-1,d,12,0,0)); // midday UTC to avoid DST shifts
-}
-
-const bins = [
-  {
-    id:'non',
-    name:'Non-Recyclable Waste',
-    start: toUTCDate(2025,11,17), // Mon 17 Nov 2025
-    intervalWeeks:3,
-    label:'Non-Recyclable',
-    swatch:'sw-non'
-  },
-  {
-    id:'food',
-    name:'Food Waste',
-    start: toUTCDate(2025,11,17), // weekly from 17 Nov
-    intervalWeeks:1,
-    label:'Food Waste',
-    swatch:'sw-food'
-  },
-  {
-    id:'mixed',
-    name:'Mixed Recycling',
-    start: toUTCDate(2025,11,24), // Mon 24 Nov 2025
-    intervalWeeks:3,
-    label:'Mixed Recycling',
-    swatch:'sw-mixed'
-  },
-  {
-    id:'garden',
-    name:'Garden Waste',
-    start: toUTCDate(2025,11,24), // fortnightly starting 24 Nov
-    intervalWeeks:2,
-    label:'Garden Waste',
-    swatch:'sw-garden'
-  },
-  {
-    id:'card',
-    name:'Cardboard & Paper',
-    start: toUTCDate(2025,12,1), // Mon 1 Dec 2025
-    intervalWeeks:3,
-    label:'Cardboard & Paper',
-    swatch:'sw-card'
-  }
-];
-
-// compute next N Mondays from a reference date (including if reference is Monday and keep it)
-function nextMondays(fromDate, count){
-  const result = [];
-  // start from local date but treat as UTC days (we used UTC noon for starts)
-  let d = new Date(fromDate);
-  d.setUTCHours(12,0,0,0);
-  // find next Monday (0=Sun,1=Mon)
-  const day = d.getUTCDay();
-  const daysUntilMon = ( (1 - day) + 7 ) % 7; // 0 if monday
-  d = new Date(d.getTime() + daysUntilMon*MS_DAY);
-  for(let i=0;i<count;i++){
-    result.push(new Date(d.getTime() + i*7*MS_DAY));
-  }
-  return result;
-}
-
-function weeksBetween(start, date){
-  const diff = Math.round((date.getTime() - start.getTime())/(7*MS_DAY));
-  return diff;
-}
-
-function isOnBin(bin, date){
-  if(date.getTime() < bin.start.getTime()) return false;
-  // ensure both are Mondays (they should be)
-  const w = weeksBetween(bin.start, date);
-  return w >= 0 && (w % bin.intervalWeeks) === 0;
-}
-
-function formatDate(d){
-  const locale = navigator.language || 'en-GB';
-  return d.toLocaleDateString(locale, {weekday:'short',day:'2-digit',month:'short'});
-}
-
-// build UI
-let showCount = 8; // default number of Mondays shown
-const thead = document.getElementById('thead');
-const tbody = document.getElementById('tbody');
-const upcomingText = document.getElementById('upcomingText');
-const refreshBtn = document.getElementById('refreshBtn');
-const toggleFuture = document.getElementById('toggleFuture');
-
-function render(){
-  const now = new Date();
-  const mondays = nextMondays(now, showCount);
-
-  // build header row: first empty cell then dates
-  let th = '<tr><th class="bin-name">Bin / Date</th>';
-  for(const d of mondays){
-    const isToday = (new Date().toDateString() === new Date(d.getTime()).toDateString());
-    th += `<th class="${isToday? 'today' : ''}">${formatDate(d)}</th>`;
-  }
-  th += '</tr>';
-  thead.innerHTML = th;
-
-  // rows for bins
-  let rows = '';
-  for(const bin of bins){
-    rows += `<tr><td class="bin-name">${bin.name}</td>`;
-    for(const d of mondays){
-      if(isOnBin(bin,d)){
-        rows += `<td><span class="cell-on">${bin.label}<br>${formatDate(d)}</span></td>`;
-      } else {
-        rows += `<td class="cell-off">-</td>`;
-      }
+    // --- Utility Functions ---
+    function formatDate(d) {
+        return d.toLocaleDateString("en-GB", {
+            weekday: "long",
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
     }
-    rows += '</tr>';
-  }
-  tbody.innerHTML = rows;
 
-  // compute next upcoming pickups (next 5)
-  const upcoming = [];
-  // search forward for dates where any bin occurs, stopping after found 8 events or 90 days window
-  const searchLimit = 90; // days
-  for(let offset=0; offset<=searchLimit; offset++){
-    const candidate = new Date(now.getTime() + offset*MS_DAY);
-    // consider Mondays only because all pickups happen on Mondays
-    if(candidate.getUTCDay() !== 1) continue;
-    for(const bin of bins){
-      if(isOnBin(bin, candidate)){
-        upcoming.push({date:candidate, bin:bin});
-        if(upcoming.length>=6) break;
-      }
+    function addDays(date, days) {
+        const d = new Date(date);
+        d.setDate(d.getDate() + days);
+        return d;
     }
-    if(upcoming.length>=6) break;
-  }
 
-  if(upcoming.length===0){
-    upcomingText.textContent = 'No upcoming pickups found in the next 90 days.';
-  } else {
-    upcomingText.innerHTML = upcoming.slice(0,5).map(u=>`<span><strong>${u.bin.label}</strong> — ${formatDate(u.date)}</span>`).join('');
-  }
+    function nextCycle(start, cycleDays, today) {
+        let d = new Date(start);
+        while (d < today) d = addDays(d, cycleDays);
+        return d;
+    }
 
-}
+    // --- Today (auto) ---
+    const today = new Date(); // auto-updates every day
+    const tomorrow = addDays(today, 1);
 
-refreshBtn.addEventListener('click', ()=>render());
-toggleFuture.addEventListener('click', ()=>{
-  showCount = (showCount===8)? 12 : 8;
-  toggleFuture.textContent = showCount===8? 'Show 8 Mondays':'Show 12 Mondays';
-  render();
-});
+    // --- Official Starting Points from Council ---
+    const cycles = {
+        nonRecyclable: {
+            name: "Non-Recyclable Waste (Purple Lid)",
+            start: new Date("2025-11-17"),
+            cycle: 21
+        },
+        food: {
+            name: "Food Waste (Brown Caddy)",
+            start: new Date("2025-11-17"),
+            cycle: 7
+        },
+        mixed: {
+            name: "Mixed Recycling (Black Lid)",
+            start: new Date("2025-11-24"),
+            cycle: 21
+        },
+        garden: {
+            name: "Garden Waste (Brown Lid)",
+            start: new Date("2025-11-24"),
+            cycle: 14
+        },
+        paper: {
+            name: "Cardboard & Paper (Blue Lid)",
+            start: new Date("2025-12-01"),
+            cycle: 21
+        }
+    };
 
-// initial
-render();
+    // --- Render Output ---
+    const output = document.getElementById("output");
+
+    for (const key in cycles) {
+        const bin = cycles[key];
+        const next = nextCycle(bin.start, bin.cycle, today);
+
+        let label = "";
+        if (formatDate(next) === formatDate(today)) label = " <span class='today'>(Today)</span>";
+        if (formatDate(next) === formatDate(tomorrow)) label = " <span class='tomorrow'>(Tomorrow)</span>";
+
+        output.innerHTML += `
+            <div class="bin">
+                <h2>${bin.name}</h2>
+                <p><strong>Next collection:</strong> ${formatDate(next)}${label}</p>
+                <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
+            </div>
+        `;
+    }
 </script>
+
 </body>
 </html>
-
