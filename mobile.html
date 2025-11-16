@@ -16,33 +16,51 @@
         background: #000;
         color: white;
         font-family: Arial, sans-serif;
-        padding: 10px;
+        padding: 20px;
     }
 
+    /* MUCH BIGGER TITLE */
     h1 {
         text-align: center;
         font-family:'LeagueSpartan';
         font-weight:700;
-        margin-bottom: 20px;
+        margin-bottom: 35px;
         color:#17D860;
-        font-size: 28px;
+        font-size: 40px;
     }
 
+    /* MUCH BIGGER BIN BOXES */
     .bin {
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 12px;
-        border: 5px solid #333;
+        padding: 35px;
+        margin-bottom: 35px;
+        border-radius: 16px;
+        border: 8px solid #333;
         font-family:'LeagueSpartan';
+        font-size: 26px;
+        line-height: 1.5;
     }
 
+    /* Bigger bin colours */
     .purple { background:#2b004d; }
     .brown { background:#3b2400; }
     .black { background:#111; }
     .brown2 { background:#4a2e00; }
     .blue { background:#003d7d; }
 
-    .today, .tomorrow { color: #4db6ff; font-weight:bold; }
+    /* Bigger "today" and "tomorrow" labels */
+    .today, .tomorrow { 
+        color: #4db6ff; 
+        font-weight:bold;
+        font-size: 28px;
+    }
+
+    /* Bigger footer */
+    footer {
+        margin-top: 50px;
+        text-align: center;
+        font-family:'LeagueSpartan';
+        font-size: 22px;
+    }
 </style>
 </head>
 <body>
@@ -89,21 +107,21 @@
         if (isToday) labelHTML = " <span class='today'>(Today)</span>";
         if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
 
-        let borderStyle = "5px solid #333";
+        let borderStyle = "8px solid #333";
         if (isToday || isTomorrow) {
-            borderStyle = '5px solid white';
+            borderStyle = '8px solid white';
         }
 
         output.innerHTML += `
             <div class="bin ${bin.color}" style="border:${borderStyle}">
-                <h2>${bin.name}</h2>
-                <p><strong>${formatDate(next)}</strong>${labelHTML}</p>
+                <h2 style="font-size:32px;margin-bottom:15px;">${bin.name}</h2>
+                <p style="font-size:26px;"><strong>${formatDate(next)}</strong>${labelHTML}</p>
             </div>
         `;
     }
 </script>
 
-<footer style="text-align:center;margin-top:30px;font-family:'LeagueSpartan';font-size:16px;">Pip Chell</footer>
+<footer>Pip Chell</footer>
 
 </body>
 </html>
