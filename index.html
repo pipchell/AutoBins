@@ -6,68 +6,83 @@
 <title>Bin Collections - Royston</title>
 <link rel="icon" type="image/png" href="logo2.png">
 <style>
-    @font-face {
-        font-family: 'LeagueSpartan';
-        src: url('LeagueSpartan-Bold.woff2') format('woff2'),
-             url('LeagueSpartan-Bold.woff') format('woff');
-        font-weight: 700;
+@font-face {
+    font-family: 'LeagueSpartan';
+    src: url('LeagueSpartan-Bold.woff2') format('woff2'),
+         url('LeagueSpartan-Bold.woff') format('woff');
+    font-weight: 700;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+h1 { 
+    text-align: center; 
+    font-family:'LeagueSpartan'; 
+    font-weight:700; 
+    margin-bottom: 30px; 
+    color:#17D860;
+}
+
+.bin {
+    padding: 30px; 
+    margin-bottom: 30px; 
+    border-radius: 10px; 
+    border: 6px solid #333; 
+    font-family:'LeagueSpartan'; 
+    color:white;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.purple { background:#2b004d; }
+.brown { background:#3b2400; }
+.black { background:#111; }
+.brown2 { background:#4a2e00; }
+.blue { background:#003d7d; }
+
+.today, .tomorrow { color: #4db6ff; font-weight: bold; }
+
+footer {
+    text-align:center;
+    margin-top:50px;
+    font-family:'LeagueSpartan';
+    font-size:18px;
+}
+
+/* Mobile slight zoom with proper centering */
+@media screen and (max-width: 768px) {
+    .wrapper {
+        transform: scale(1.10);
+        transform-origin: top center;
+        width: 100%;
     }
-
-    body {
-        background: #000;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        margin: 0;
-        overflow-x: hidden;
-    }
-
-    h1 { 
-        text-align: center; 
-        margin-bottom: 30px; 
-        font-family:'LeagueSpartan'; 
-        font-weight:700; 
-        color:#17D860;
-    }
-
-    .bin {
-        padding: 30px; 
-        margin-bottom: 30px; 
-        border-radius: 10px; 
-        border: 6px solid #333; 
-        font-family:'LeagueSpartan'; 
-        color:white;
-    }
-
-    .purple { background:#2b004d; }
-    .brown { background:#3b2400; }
-    .black { background:#111; }
-    .brown2 { background:#4a2e00; }
-    .blue { background:#003d7d; }
-
-    .today, .tomorrow { color: #4db6ff; font-weight: bold; }
-
-    footer {
-        text-align:center;
-        margin-top:50px;
-        font-family:'LeagueSpartan';
-        font-size:18px;
-    }
-
-    /* Mobile subtle zoom */
-    @media screen and (max-width: 768px) {
-        body {
-            transform: scale(1.10);
-            transform-origin: top center;
-            overflow-x: hidden;
-        }
-    }
+}
 </style>
 </head>
 <body>
 
-<h1>Bin Collections - Royston</h1>
-<div id="output"></div>
+<div class="wrapper">
+    <h1>Bin Collections - Royston</h1>
+    <div id="output"></div>
+    <footer>Pip Chell - V4</footer>
+</div>
 
 <script>
 function formatDate(d) {
@@ -110,9 +125,7 @@ for (const key in cycles) {
     if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
 
     let borderStyle = "6px solid #333";
-    if (isToday || isTomorrow) {
-        borderStyle = '6px solid white';
-    }
+    if (isToday || isTomorrow) borderStyle = '6px solid white';
 
     output.innerHTML += `
         <div class="bin ${bin.color}" style="border:${borderStyle}">
@@ -123,8 +136,6 @@ for (const key in cycles) {
     `;
 }
 </script>
-
-<footer>Pip Chell - V4</footer>
 
 </body>
 </html>
