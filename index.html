@@ -13,34 +13,42 @@
     font-weight: 700;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background: #000;
     color: white;
     font-family: Arial, sans-serif;
+}
+
+.wrapper {
+    max-width: 900px; /* desktop max width */
+    margin: 0 auto;   /* center horizontally */
+    padding: 20px;
 }
 
 h1 {
     text-align: center;
     font-family:'LeagueSpartan';
     font-weight:700;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     color: #17D860;
-    font-size: 36px;
+    font-size: 40px;
 }
 
 .bin {
     padding: 30px;
     margin-bottom: 30px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 6px solid #333;
     font-family:'LeagueSpartan';
     color:white;
-    max-width: 500px;
     width: 100%;
     text-align: center;
-    box-sizing: border-box;
 }
 
 .purple { background:#2b004d; }
@@ -51,7 +59,7 @@ h1 {
 
 .today, .tomorrow {
     color: #4db6ff;
-    font-weight: bold;
+    font-weight:bold;
 }
 
 footer {
@@ -61,20 +69,19 @@ footer {
     font-size:18px;
 }
 
-/* Mobile adjustments only */
+/* Mobile adjustments */
 @media screen and (max-width: 768px) {
-    body {
+    .wrapper {
         padding: 15px;
     }
 
     h1 {
-        font-size: 44px; /* slightly bigger */
+        font-size: 44px; /* slightly bigger for mobile */
     }
 
     .bin {
         padding: 36px;
-        font-size: 20px; /* slightly bigger text */
-        max-width: 95%;
+        font-size: 20px;
     }
 
     .today, .tomorrow {
@@ -89,9 +96,11 @@ footer {
 </head>
 <body>
 
-<h1>Bin Collections - Royston</h1>
-<div id="output"></div>
-<footer>Pip Chell - V4</footer>
+<div class="wrapper">
+    <h1>Bin Collections - Royston</h1>
+    <div id="output"></div>
+    <footer>Pip Chell - V4</footer>
+</div>
 
 <script>
 function formatDate(d) {
