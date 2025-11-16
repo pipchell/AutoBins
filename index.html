@@ -5,6 +5,12 @@
 <title>Bin Collections - Royston</title>
 <link rel="icon" type="image/png" href="logo2.png">
 <style>
+     @font-face {
+      font-family: "League Spartan";
+      src: url("LeagueSpartan-Bold.woff2") format("woff2"),
+           url("LeagueSpartan-Bold.woff") format("woff");
+      font-weight: bold;
+    }
     body {
         background: #000;
         color: white;
@@ -12,13 +18,15 @@
         padding: 20px;
     }
     h1 { text-align: center; margin-bottom: 30px; }
-    .bin {
-        background: #111;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 1px solid #333;
-    }
+
+    /* Dynamic bin colours */
+    .bin { padding: 20px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #333; }
+    .purple { background:#2b004d; }
+    .brown { background:#3b2400; }
+    .black { background:#111; }
+    .brown2 { background:#4a2e00; }
+    .blue { background:#001f3f; }
+
     .today { color: #17d860; font-weight: bold; }
     .tomorrow { color: #4db6ff; font-weight: bold; }
 </style>
@@ -29,7 +37,6 @@
 <div id="output"></div>
 
 <script>
-    // --- Utility Functions ---
     function formatDate(d) {
         return d.toLocaleDateString("en-GB", {
             weekday: "long",
@@ -39,52 +46,24 @@
         });
     }
 
-    function addDays(date, days) {
-        const d = new Date(date);
-        d.setDate(d.getDate() + days);
-        return d;
-    }
-
+    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
     function nextCycle(start, cycleDays, today) {
         let d = new Date(start);
         while (d < today) d = addDays(d, cycleDays);
         return d;
     }
 
-    // --- Today (auto) ---
-    const today = new Date(); // auto-updates every day
+    const today = new Date();
     const tomorrow = addDays(today, 1);
 
-    // --- Official Starting Points from Council ---
     const cycles = {
-        nonRecyclable: {
-            name: "Non-Recyclable Waste (Purple Lid)",
-            start: new Date("2025-11-17"),
-            cycle: 21
-        },
-        food: {
-            name: "Food Waste (Brown Caddy)",
-            start: new Date("2025-11-17"),
-            cycle: 7
-        },
-        mixed: {
-            name: "Mixed Recycling (Black Lid)",
-            start: new Date("2025-11-24"),
-            cycle: 21
-        },
-        garden: {
-            name: "Garden Waste (Brown Lid)",
-            start: new Date("2025-11-24"),
-            cycle: 14
-        },
-        paper: {
-            name: "Cardboard & Paper (Blue Lid)",
-            start: new Date("2025-12-01"),
-            cycle: 21
-        }
+        nonRecyclable: { name: "Non-Recyclable Waste (Purple Lid)", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
+        food: { name: "Food Waste (Brown Caddy)", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
+        mixed: { name: "Mixed Recycling (Black Lid)", start: new Date("2025-11-24"), cycle: 21, color:"black" },
+        garden: { name: "Garden Waste (Brown Lid)", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
+        paper: { name: "Cardboard & Paper (Blue Lid)", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
     };
 
-    // --- Render Output ---
     const output = document.getElementById("output");
 
     for (const key in cycles) {
@@ -96,7 +75,7 @@
         if (formatDate(next) === formatDate(tomorrow)) label = " <span class='tomorrow'>(Tomorrow)</span>";
 
         output.innerHTML += `
-            <div class="bin">
+            <div class="bin ${bin.color}">
                 <h2>${bin.name}</h2>
                 <p><strong>Next collection:</strong> ${formatDate(next)}${label}</p>
                 <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
