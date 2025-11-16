@@ -13,42 +13,34 @@
     font-weight: 700;
 }
 
-html, body {
+body {
     margin: 0;
-    padding: 0;
+    padding: 20px;
     background: #000;
     color: white;
     font-family: Arial, sans-serif;
-    height: 100%;
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-}
-
-h1 { 
-    text-align: center; 
-    font-family:'LeagueSpartan'; 
-    font-weight:700; 
-    margin-bottom: 30px; 
-    color:#17D860;
+h1 {
+    text-align: center;
+    font-family:'LeagueSpartan';
+    font-weight:700;
+    margin-bottom: 30px;
+    color: #17D860;
+    font-size: 36px;
 }
 
 .bin {
-    padding: 30px; 
-    margin-bottom: 30px; 
-    border-radius: 10px; 
-    border: 6px solid #333; 
-    font-family:'LeagueSpartan'; 
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    border: 6px solid #333;
+    font-family:'LeagueSpartan';
     color:white;
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
-    box-sizing: border-box;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .purple { background:#2b004d; }
@@ -57,7 +49,10 @@ h1 {
 .brown2 { background:#4a2e00; }
 .blue { background:#003d7d; }
 
-.today, .tomorrow { color: #4db6ff; font-weight: bold; }
+.today, .tomorrow {
+    color: #4db6ff;
+    font-weight: bold;
+}
 
 footer {
     text-align:center;
@@ -66,23 +61,37 @@ footer {
     font-size:18px;
 }
 
-/* Mobile slight zoom with proper centering */
+/* Mobile adjustments only */
 @media screen and (max-width: 768px) {
-    .wrapper {
-        transform: scale(1.10);
-        transform-origin: top center;
-        width: 100%;
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 44px; /* slightly bigger */
+    }
+
+    .bin {
+        padding: 36px;
+        font-size: 20px; /* slightly bigger text */
+        max-width: 95%;
+    }
+
+    .today, .tomorrow {
+        font-size: 22px;
+    }
+
+    footer {
+        font-size: 20px;
     }
 }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <h1>Bin Collections - Royston</h1>
-    <div id="output"></div>
-    <footer>Pip Chell - V4</footer>
-</div>
+<h1>Bin Collections - Royston</h1>
+<div id="output"></div>
+<footer>Pip Chell - V4</footer>
 
 <script>
 function formatDate(d) {
