@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bins - Royston</title>
+<title>Bins - Royston (Mobile)</title>
 <link rel="icon" type="image/png" href="logo2.png">
 
 <style>
@@ -18,54 +17,59 @@
         background: #000;
         color: white;
         font-family: Arial, sans-serif;
-        padding: 24px;
+        margin: 0;
+        padding: 25px;
     }
 
-    /* MOBILE: Large title */
+    /* MASSIVE green title for mobile */
     h1 {
         text-align: center;
         font-family:'LeagueSpartan';
         font-weight:700;
-        margin-bottom: 40px;
+        font-size: 52px;
         color:#17D860;
-        font-size: 46px;
+        margin-bottom: 40px;
     }
 
-    /* MOBILE: Big bin boxes */
+    /* Huge bin container */
     .bin {
         padding: 40px;
-        margin-bottom: 40px;
+        margin-bottom: 45px;
         border-radius: 20px;
         border: 10px solid #333;
         font-family:'LeagueSpartan';
-        font-size: 30px;
-        line-height: 1.6;
     }
 
-    /* Bin colours */
     .purple { background:#2b004d; }
-    .brown { background:#3b2400; }
-    .black { background:#111; }
+    .brown  { background:#3b2400; }
+    .black  { background:#111; }
     .brown2 { background:#4a2e00; }
-    .blue { background:#003d7d; }
+    .blue   { background:#003d7d; }
 
-    /* Mobile: big "today" and "tomorrow" tags */
-    .today, .tomorrow { 
-        color: #4db6ff; 
-        font-weight: bold;
-        font-size: 32px;
+    .bin h2 {
+        font-size: 42px;
+        margin-bottom: 20px;
     }
 
-    /* Footer */
+    .bin p {
+        font-size: 34px;
+        margin: 10px 0;
+    }
+
+    /* Massive labels */
+    .today, .tomorrow {
+        color: #4db6ff;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
     footer {
-        margin-top: 60px;
         text-align: center;
-        font-family:'LeagueSpartan';
         font-size: 26px;
-        color: #777;
+        margin-top: 60px;
+        font-family:'LeagueSpartan';
     }
 </style>
-
 </head>
 <body>
 
@@ -98,10 +102,10 @@
 
     const cycles = {
         nonRecyclable: { name: "Purple Lid", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
-        food: { name: "Food Caddy", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
-        mixed: { name: "Black Lid", start: new Date("2025-11-24"), cycle: 21, color:"black" },
-        garden: { name: "Garden Waste", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
-        paper: { name: "Blue Lid", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
+        food:          { name: "Food Caddy", start: new Date("2025-11-17"), cycle: 7,  color:"brown" },
+        mixed:         { name: "Black Lid",  start: new Date("2025-11-24"), cycle: 21, color:"black" },
+        garden:        { name: "Garden Waste", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
+        paper:         { name: "Blue Lid",   start: new Date("2025-12-01"), cycle: 21, color:"blue" }
     };
 
     const output = document.getElementById("output");
@@ -124,8 +128,8 @@
 
         output.innerHTML += `
             <div class="bin ${bin.color}" style="border:${borderStyle}">
-                <h2 style="font-size:34px;margin-bottom:18px;">${bin.name}</h2>
-                <p style="font-size:30px;"><strong>${formatDate(next)}</strong>${labelHTML}</p>
+                <h2>${bin.name}</h2>
+                <p><strong>${formatDate(next)}</strong>${labelHTML}</p>
             </div>
         `;
     }
