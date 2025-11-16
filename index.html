@@ -5,35 +5,43 @@
 <title>Bin Collections - Royston</title>
 <link rel="icon" type="image/png" href="logo2.png">
 <style>
-     @font-face {
-      font-family: "League Spartan";
-      src: url("LeagueSpartan-Bold.woff2") format("woff2"),
-           url("LeagueSpartan-Bold.woff") format("woff");
-      font-weight: bold;
+    @font-face {
+        font-family: 'LeagueSpartan';
+        src: url('LeagueSpartan-Bold.woff2') format('woff2'),
+             url('LeagueSpartan-Bold.woff') format('woff');
+        font-weight: 700;
     }
+
     body {
         background: #000;
         color: white;
         font-family: Arial, sans-serif;
         padding: 20px;
     }
-    h1 { text-align: center; margin-bottom: 30px; }
+    h1 { text-align: center; margin-bottom: 30px; font-family:'LeagueSpartan'; font-weight:700; }
 
     /* Dynamic bin colours */
-    .bin { padding: 20px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #333; }
+    .bin { padding: 20px; margin-bottom: 20px; border-radius: 10px; border: 6px solid #333; font-family:'LeagueSpartan'; color:white; }
     .purple { background:#2b004d; }
     .brown { background:#3b2400; }
     .black { background:#111; }
     .brown2 { background:#4a2e00; }
     .blue { background:#001f3f; }
 
-    .today { color: #17d860; font-weight: bold; }
-    .tomorrow { color: #4db6ff; font-weight: bold; }
+    .today, .tomorrow { color: #4db6ff; font-weight: bold; }
+
+    .light{background:#fff;color:#000;}
+    .light .bin { color: #fff; border-color: #333; }
+    .light .bin.today, .light .bin.tomorrow { border-color: #17d860 !important; }
+    .light footer { background: none; color:black; padding:10px 0; }
 </style>
 </head>
 <body>
 
-<h1>Bin Collections - Royston</h1>
+<div style="display:flex;justify-content:center;align-items:center;gap:20px;margin-bottom:30px;">
+<h1 style="margin:0;">Bin Collections - Royston</h1>
+<button id="themeToggle" style="margin-left:auto;padding:10px 15px;border:none;border-radius:6px;background:#17d860;color:#000;font-family:'LeagueSpartan';cursor:pointer;">Toggle Theme</button>
+</div>
 <div id="output"></div>
 
 <script>
@@ -70,19 +78,50 @@
         const bin = cycles[key];
         const next = nextCycle(bin.start, bin.cycle, today);
 
-        let label = "";
-        if (formatDate(next) === formatDate(today)) label = " <span class='today'>(Today)</span>";
-        if (formatDate(next) === formatDate(tomorrow)) label = " <span class='tomorrow'>(Tomorrow)</span>";
+        let labelHTML = "";
+        let isToday = formatDate(next) === formatDate(today);
+        let isTomorrow = formatDate(next) === formatDate(tomorrow);
+        if (isToday) labelHTML = " <span class='today'>(Today)</span>";
+        if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
+
+        let borderStyle = "6px solid #333";
+        if (isToday || isTomorrow) {
+            borderStyle = '6px solid white';
+            if (document.body.classList.contains('light')) {
+                borderStyle = '6px solid #17d860';
+            }
+        }
 
         output.innerHTML += `
-            <div class="bin ${bin.color}">
+            <div class="bin ${bin.color}" style="border:${borderStyle}">
                 <h2>${bin.name}</h2>
-                <p><strong>Next collection:</strong> ${formatDate(next)}${label}</p>
+                <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
                 <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
             </div>
         `;
     }
 </script>
 
+<footer style="text-align:center;margin-top:40px;font-family:'LeagueSpartan';font-size:18px;">Pip Chell</footer>
+
+<script>
+const btn = document.getElementById('themeToggle');
+btn.onclick = () => {
+ document.body.classList.toggle('light');
+ const bins = document.querySelectorAll('.bin');
+ bins.forEach(bin => {
+   if (bin.querySelector('.today') || bin.querySelector('.tomorrow')) {
+     if (document.body.classList.contains('light')) {
+       bin.style.border = '6px solid #17d860';
+     } else {
+       bin.style.border = '6px solid white';
+     }
+   }
+ });
+};
+
+// Default to dark mode
+if(document.body.classList.contains('light')) document.body.classList.remove('light');
+</script>
 </body>
 </html>
