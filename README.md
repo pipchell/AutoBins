@@ -20,25 +20,6 @@ Bins – Royston is a minimal web application that displays upcoming bin collect
 - Easy Maintenance
 - Bin dates can be updated by editing a single section of the HTML—no databases or APIs required.
 
-### Project Structure:
-/project-root
-│
-├── index.html   # Main and only file containing layout, styling, and responsive scaling
-└── README.md    # Documentation
-
-### Mobile Scaling:
-
-The project uses proportional zoom via CSS transforms. This keeps the desktop layout intact while enlarging it on mobile:
-
-@media screen and (max-width: 768px) {
-    .scale-wrapper {
-        transform: scale(1.17);
-        transform-origin: top center;
-    }
-}
-
-Change the value to adjust zoom.
-
 ### Adjusting Zoom Level:
 
 Modify:
