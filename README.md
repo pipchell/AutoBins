@@ -46,7 +46,7 @@ Lower values reduce zoom. Higher values increase it.
 ### Why This Project Exists:
 
 # The official bin-collection interface is harder to read quickly, inconsistent across devices, and often cluttered.
-This project improves on that by:
+### This project improves on that by:
 - Putting all information on one screen
 - Removing unnecessary navigation
 - Improving readability at a distance
