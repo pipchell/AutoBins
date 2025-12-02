@@ -4,15 +4,12 @@
 <a href="https://github.com/pipchell/AutoBins-Royston/releases/tag/4.6">
   <span><img src="https://img.shields.io/badge/Pages-Live-brightgreen?logo=github" /></span>
 </a>
-
 <a href="https://github.com/pipchell/AutoBins-Royston?tab=readme-ov-file#license">
   <span><img src="https://img.shields.io/badge/License-MIT-yellow?logo=github" /></span>
 </a>
-
 <a href="https://bins.rpcgroup.xyz">
   <span><img src="https://img.shields.io/badge/Visit-red?logo=github" /></span>
 </a>
-
 <a href="https://github.com/pipchell/AutoBins-Royston/stargazers">
   <span><img src="https://img.shields.io/github/stars/pipchell/AutoBins-Royston?style=flat&logo=github" /></span>
 </a>
