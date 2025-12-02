@@ -13,6 +13,11 @@
   <span><img src="https://img.shields.io/badge/Visit-red?logo=github" /></span>
 </a>
 
+<a href="https://github.com/pipchell/AutoBins-Royston/stargazers">
+  <span><img src="https://img.shields.io/github/stars/pipchell/AutoBins-Royston?style=flat&logo=github" /></span>
+</a>
+
+
 ## Current version:
 ### 4.6 - Now ordered nearest to now &rarr; furthest from now.
 
