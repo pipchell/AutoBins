@@ -1,18 +1,22 @@
 # **Auto Bins:**
 <ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.<br>
 <br>
-<a href="https://github.com/pipchell/AutoBins-Royston/releases/tag/4.6">
+<a href="https://github.com/pipchell/AutoBins-Royston/releases/tag/4.6" style="text-decoration:none;">
   <span><img src="https://img.shields.io/badge/Pages-Live-brightgreen?logo=github" /></span>
 </a>
-<a href="https://github.com/pipchell/AutoBins-Royston?tab=readme-ov-file#license">
+
+<a href="https://github.com/pipchell/AutoBins-Royston?tab=readme-ov-file#license" style="text-decoration:none;">
   <span><img src="https://img.shields.io/badge/License-MIT-yellow?logo=github" /></span>
 </a>
-<a href="https://bins.rpcgroup.xyz">
+
+<a href="https://bins.rpcgroup.xyz" style="text-decoration:none;">
   <span><img src="https://img.shields.io/badge/Visit-red?logo=github" /></span>
 </a>
-<a href="https://github.com/pipchell/AutoBins-Royston/stargazers">
+
+<a href="https://github.com/pipchell/AutoBins-Royston/stargazers" style="text-decoration:none;">
   <span><img src="https://img.shields.io/github/stars/pipchell/AutoBins-Royston?style=flat&logo=github" /></span>
 </a>
+
 
 
 ## Current version:
